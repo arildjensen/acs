@@ -1,4 +1,9 @@
-import feedparser;
+import feedparser
+import re
+
+def striphtml(data):
+    p = re.compile(r'<.*?>')
+    return p.sub('', data)
 
 lafd_feed = 'https://www.lafd.org/alerts-rss.xml'
 web_file = 'index.html'
@@ -14,7 +19,7 @@ f.write ("    <meta charset=\"UTF-8\">" + "\n")
 f.write ("    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" + "\n")
 f.write ("    <title>LAFD Feed</title>" + "\n")
 f.write ("  </head>" + "\n")
-f.write ("  <body>" + "\n")
+f.write ("  <body style=\"font-family:arial;\">" + "\n")
 
 if('title' in d.feed):
     f.write ("<h1>" + d.feed.title + "</h1>\n")
@@ -45,9 +50,12 @@ while i < max_entries:
         break
     #f.write ("------------------------------------------------------------\n")
     f.write ("<! Entry: " + str(i) + ">\n")
-    f.write ("<h2>" + d.entries[i].title                + "</h2>\n")
-    f.write ("<p>"  + d.entries[i].published            + "</p>\n")
-    f.write ("<p>"  + d.entries[i].summary_detail.value + "</p>\n")
+    f.write ("<h2>" + striphtml(d.entries[i].title)      + "</h2>\n")
+    f.write ("<h3>"  + d.entries[i].published            + "</h3>\n")
+    summary_clean = striphtml(d.entries[i].summary_detail.value)
+    summary_clean = re.sub(r"http\S+", "", summary_clean)
+    summary_clean = re.sub(r"MAP: ", "", summary_clean)
+    f.write ("<p>"  + summary_clean + "</p>\n")
     i += 1
 
 
