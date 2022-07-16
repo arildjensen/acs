@@ -1,8 +1,6 @@
 # Feedparser
 Repo: https://github.com/kurtmckee/feedparser
 
-Install: `pip install feedparser`
-
 # Install
 
 ## As root, do the following
@@ -15,4 +13,4 @@ mv generate-site.py /usr/local/bin
 ```
 
 ## Add to crontab
-`* * * * * cd /var/www.html && python /usr/local/bin/generate-site.py`
+`* * * * * cd /var/www/html && python3 /usr/local/bin/generate-site.py`
